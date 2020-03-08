@@ -20,6 +20,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
+import com.naver.maps.geometry.LatLng;
+import com.naver.maps.map.CameraUpdate;
 import com.naver.maps.map.LocationTrackingMode;
 import com.naver.maps.map.MapFragment;
 import com.naver.maps.map.NaverMap;
@@ -166,6 +168,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         //location.getLatitude = 위도 location.getLongitude() = 경도
         naverMap.addOnLocationChangeListener(location ->{
                 lat = location.getLatitude(); lng = location.getLongitude();});
+        CameraUpdate cameraUpdate = CameraUpdate.scrollTo(new LatLng(lat, lng));
+        naverMap.moveCamera(cameraUpdate);
+
 
 
 
