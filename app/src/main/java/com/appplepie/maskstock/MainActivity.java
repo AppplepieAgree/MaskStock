@@ -161,15 +161,19 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @UiThread
     @Override
     public void onMapReady(@NonNull NaverMap naverMap) {
-
+        Log.e(TAG, "onMapReady: asd");
         naverMap.setLocationSource(locationSource);
         naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
 
         //location.getLatitude = 위도 location.getLongitude() = 경도
         naverMap.addOnLocationChangeListener(location ->{
-                lat = location.getLatitude(); lng = location.getLongitude();});
-        CameraUpdate cameraUpdate = CameraUpdate.scrollTo(new LatLng(lat, lng));
-        naverMap.moveCamera(cameraUpdate);
+            lat = location.getLatitude(); lng = location.getLongitude();
+            CameraUpdate cameraUpdate = CameraUpdate.scrollTo(new LatLng(lat, lng));
+            naverMap.moveCamera(cameraUpdate);
+        });
+
+
+
 
 
 
