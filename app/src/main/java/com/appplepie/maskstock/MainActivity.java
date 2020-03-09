@@ -10,7 +10,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity{
 
-    private static final String TAG = "MainActivity";
     private MaskMapFragment maskMapFragment = new MaskMapFragment();
 
     FragmentManager fm = getSupportFragmentManager();
@@ -25,19 +24,16 @@ public class MainActivity extends AppCompatActivity{
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.replace(R.id.fragment, maskMapFragment).commitAllowingStateLoss();
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                FragmentTransaction transaction = fm.beginTransaction();
-                switch (item.getItemId()) {
-                    case R.id.bottom_map: {
-                        transaction.replace(R.id.fragment,maskMapFragment).commitAllowingStateLoss();
-                        break;
-                    }
+        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+            FragmentTransaction transaction1 = fm.beginTransaction();
+            switch (item.getItemId()) {
+                case R.id.bottom_map: {
+                    transaction1.replace(R.id.fragment,maskMapFragment).commitAllowingStateLoss();
+                    break;
                 }
-
-                return true;
             }
+
+            return true;
         });
 
 

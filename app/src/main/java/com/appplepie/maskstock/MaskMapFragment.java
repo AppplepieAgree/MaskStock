@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -67,12 +66,15 @@ public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
         locationSource =
                 new FusedLocationSource(this, LOCATION_REQUEST_CODE);
 
-        loactionRefresh.setOnClickListener((View.OnClickListener) v1 -> {
+        loactionRefresh.setOnClickListener(v1 -> {
             storeResult = new GetElements().getStores(lat, lng);
-            Marker marker = new Marker();
-            marker.setPosition(new LatLng(37.5670135, 126.9783740));
-            marker.setMap(naverMap);
-            //Toast.makeText(a, storeResult.count+"", Toast.LENGTH_SHORT).show();
+            if (storeResult!=null) {
+                for (int i=0; i<storeResult.count; i++){
+                    Marker marker = new Marker();
+                    marker.setPosition(new LatLng(storeResult.stores[i].lat, storeResult.stores[i].lng));
+                    marker.setMap(naverMap);
+                }
+            }
 
         });
         return v;

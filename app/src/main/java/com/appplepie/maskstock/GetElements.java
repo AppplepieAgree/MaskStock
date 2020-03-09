@@ -13,9 +13,9 @@ import java.nio.charset.StandardCharsets;
 
 public class GetElements {
     private static final String TAG = "getElements";
-    String REQUEST_URL;
-    String result;
-    public StoreResult getStores (double lat, double lng){ //스토어 가져오기
+    private String REQUEST_URL;
+    private String result;
+    StoreResult getStores(double lat, double lng){ //스토어 가져오기
         REQUEST_URL = String.format("https://8oi9s0nnth.apigw.ntruss.com/corona19-masks/v1/storesByGeo/json?lat=%f&lng=%f&m=3000", lat, lng);
         Log.e(TAG, "getStores: "+ REQUEST_URL );
 
