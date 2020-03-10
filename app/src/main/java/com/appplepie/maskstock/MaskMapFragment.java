@@ -35,7 +35,7 @@ public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
     private StoreResult storeResult;
     private double lat;
     private double lng;
-    NaverMap naverMap;
+    private NaverMap naverMap;
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
