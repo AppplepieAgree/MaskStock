@@ -35,7 +35,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.5" />
+                android:layout_weight="0.1" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"

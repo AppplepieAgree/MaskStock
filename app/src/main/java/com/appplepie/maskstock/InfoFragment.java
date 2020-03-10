@@ -40,9 +40,10 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 public class InfoFragment extends Fragment {
     private static String[] num = {"", "", "", ""};
     private static String[] before = {"", "", "", ""};
-    private static Elements element1, element2;
+    private static Elements element1, element2, element3;
     TextView confirmed, cured, curing, dead, confirmed_String, cured_string, curing_String, dead_string;
     PieChart chart;
+    static String[] rNum = {"", "", ""};
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -66,8 +67,6 @@ public class InfoFragment extends Fragment {
         chart = v.findViewById(R.id.piechart);
         chart.getDescription().setEnabled(false);
 
-        Typeface tf = Typeface.createFromAsset(getContext().getAssets(), "OpenSans-Light.ttf");
-
         // radius of the center hole in percent of maximum radius
         chart.setHoleRadius(45f);
         chart.setTransparentCircleRadius(50f);
@@ -78,22 +77,20 @@ public class InfoFragment extends Fragment {
         l.setOrientation(Legend.LegendOrientation.VERTICAL);
         l.setDrawInside(false);
 
-        chart.setData(generatePieData());
+
 
         return v;
     }
     private PieData generatePieData() {
 
-        int count = 4;
-
         ArrayList<PieEntry> entries1 = new ArrayList<>();
+        Log.e(TAG, "generatePieData: "+rNum[0] );
+        entries1.add(new PieEntry(Float.parseFloat(rNum[0].replace(",", "")), "검사중"));
+        entries1.add(new PieEntry(Float.parseFloat(rNum[1].replace(",", "")), "확진"));
+        entries1.add(new PieEntry(Float.parseFloat(rNum[2].replace(",", "")), "결과음성"));
 
-        for(int i = 0; i < count; i++) {
-            entries1.add(new PieEntry((float) ((Math.random() * 60) + 40), "Quarter " + (i+1)));
-        }
-
-        PieDataSet ds1 = new PieDataSet(entries1, "Quarterly Revenues 2015");
-        ds1.setColors(ColorTemplate.VORDIPLOM_COLORS);
+        PieDataSet ds1 = new PieDataSet(entries1, "");
+        ds1.setColors(Color.parseColor("#2a75e0"), Color.parseColor("#858585"), Color.parseColor("#123a91"));
         ds1.setSliceSpace(2f);
         ds1.setValueTextColor(Color.WHITE);
         ds1.setValueTextSize(12f);
@@ -110,7 +107,7 @@ public class InfoFragment extends Fragment {
         s.setSpan(new ForegroundColorSpan(Color.GRAY), 8, s.length(), 0);
         return s;
     }
-    private class JsoupAsyncTask extends AsyncTask<Void, Void, Void> {
+    public class JsoupAsyncTask extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected void onPreExecute() {
@@ -128,10 +125,15 @@ public class InfoFragment extends Fragment {
 
                 element1 = doc.getElementsByClass("num");
                 element2 = doc.getElementsByClass("before");
+                element3 = doc.getElementsByClass("num_rnum");
                 for (int i =0; i < 4; i++){
                     num[i] = element1.get(i).text();
                     before[i] = element2.get(i).text();
+
                     Log.e(TAG, "doInBackground: "+num[i]);
+                }
+                for (int i =0; i<3; i++){
+                    rNum[i] = element3.get(i).text().split(" ")[0];
                 }
 
             } catch (IOException e) {
@@ -151,6 +153,9 @@ public class InfoFragment extends Fragment {
                 cured_string.setText(before[1]);
                 curing_String.setText(before[2]);
                 dead_string.setText(before[3]);
+            }
+            if (element3 !=null) {
+                chart.setData(generatePieData());
             }
         }
     }
