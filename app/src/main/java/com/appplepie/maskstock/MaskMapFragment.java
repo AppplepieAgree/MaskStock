@@ -37,7 +37,6 @@ public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
     private double lat;
     private double lng;
     private NaverMap naverMap;
-    private String type = "";
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -49,6 +48,8 @@ public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+
         if (view != null){
             ViewGroup parent = (ViewGroup) view.getParent();
             if (parent != null) parent.removeView(view);
@@ -67,24 +68,20 @@ public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
 
         MapFragment mapFragment = (MapFragment)fm.findFragmentById(R.id.map);
 
-
         mapFragment = MapFragment.newInstance();
         fm.beginTransaction().add(R.id.map, mapFragment).commit();
 
         mapFragment.getMapAsync(this);
 
-
-        //위치 반환하기 좋게하는 그런거
-        locationSource =
-                new FusedLocationSource(this, LOCATION_REQUEST_CODE);
+        locationSource = new FusedLocationSource(this,LOCATION_REQUEST_CODE);
 
         loactionRefresh.setOnClickListener(v1 -> {
             CameraUpdate cameraUpdate = CameraUpdate.scrollTo(new LatLng(lat, lng));
             naverMap.moveCamera(cameraUpdate);
-            GetElements getElements = new GetElements(lat, lng, naverMap, type);
+            GetElements getElements = new GetElements(lat, lng, naverMap);
             getElements.execute();
-            naverMap.setLocationSource(locationSource);
-            naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
+
+
         });
         return view;
     }
@@ -104,15 +101,16 @@ public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
     @UiThread
     @Override
     public void onMapReady(@NonNull NaverMap naverMap) {
-        Log.e(TAG, "onMapReady: onMapReady");
         this.naverMap = naverMap;
+        Log.e(TAG, "onMapReady: asd");
+
         naverMap.setLocationSource(locationSource);
         naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
-
         //location.getLatitude = 위도 location.getLongitude() = 경도
         naverMap.addOnLocationChangeListener(location -> {
             lat = location.getLatitude();
             lng = location.getLongitude();
+
         });
     }
 }
