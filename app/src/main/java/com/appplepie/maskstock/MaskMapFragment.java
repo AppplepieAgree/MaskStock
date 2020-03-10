@@ -1,6 +1,7 @@
 package com.appplepie.maskstock;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.InflateException;
@@ -25,6 +26,7 @@ import com.naver.maps.map.OnMapReadyCallback;
 import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.overlay.OverlayImage;
 import com.naver.maps.map.util.FusedLocationSource;
+import com.naver.maps.map.util.MarkerIcons;
 
 public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
     private final static int LOCATION_REQUEST_CODE = 1001;
@@ -89,17 +91,17 @@ public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
                     //iconCustom 원하는 아이콘
                     switch (storeResult.stores[i].type){
                         case "01":
-                            marker.setIcon(OverlayImage.fromResource(R.drawable.ic_android_black_24dp));
+                            marker.setIcon(OverlayImage.fromResource(R.drawable.ic_pharmacy));
                             break;
                         case "02":
-                            marker.setIcon(OverlayImage.fromResource(R.drawable.ic_android_black_24dp));
+                            marker.setIcon(OverlayImage.fromResource(R.drawable.ic_post_office));
                             break;
 
                         case "03":
-                            marker.setIcon(OverlayImage.fromResource(R.drawable.ic_android_black_24dp));
+                            marker.setIcon(OverlayImage.fromResource(R.drawable.ic_nhbank));
                             break;
                         default:
-                            marker.setIcon(OverlayImage.fromResource(R.drawable.ic_android_black_24dp));
+                            marker.setIcon(OverlayImage.fromResource(R.drawable.ic_pharmacy));
                             break;
                     }
                     //iconCustom - 이름 출력
@@ -107,8 +109,24 @@ public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
 
                     //markerCustom - 색깔 바꾸기
 
-                    switch (storeResult.stores[i].remain_stat){
+                    if (storeResult.stores[i].remain_stat >= 1)
+                    {
+                        marker.setIconTintColor(Color.GRAY);
 
+                    }else if(storeResult.stores[i].remain_stat>=2){
+
+                        marker.setIconTintColor(Color.RED);
+
+                    }else if (storeResult.stores[i].remain_stat>=30){
+
+                        marker.setIconTintColor(Color.YELLOW);
+
+                    }else if (storeResult.stores[i].remain_stat>=100){
+
+                        marker.setIconTintColor(Color.GREEN);
+
+                    }else {
+                        marker.setIconTintColor(Color.GRAY);
                     }
 
                     //marker출력
