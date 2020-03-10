@@ -32,6 +32,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,6 +57,7 @@ import com.naver.maps.map.util.FusedLocationSource;
 public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
     private final static  int LOCATION_REQUEST_CODE = 1001;
     private static final String TAG = "MaskMapFragment";
+    private static View view;
     private Activity a;
     private FusedLocationSource locationSource;
     private StoreResult storeResult;
@@ -73,8 +75,16 @@ public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_mask_map, null);
-        Button loactionRefresh = v.findViewById(R.id.location_refresh);
+        if (view != null){
+            ViewGroup parent = (ViewGroup) view.getParent();
+            if (parent != null) parent.removeView(view);
+        }
+        try {
+            view = inflater.inflate(R.layout.fragment_mask_map, container, false);
+        } catch (InflateException e){
+
+        }
+        Button loactionRefresh = view.findViewById(R.id.location_refresh);
         NaverMapSdk.getInstance(a).setClient(
                 new NaverMapSdk.NaverCloudPlatformClient("3gapo17ttk"));
 
@@ -95,6 +105,8 @@ public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
                 new FusedLocationSource(this, LOCATION_REQUEST_CODE);
 
         loactionRefresh.setOnClickListener(v1 -> {
+            CameraUpdate cameraUpdate = CameraUpdate.scrollTo(new LatLng(lat, lng));
+            naverMap.moveCamera(cameraUpdate);
             storeResult = new GetElements().getStores(lat, lng);
             if (storeResult!=null) {
                 for (int i=0; i<storeResult.count; i++){
@@ -105,7 +117,7 @@ public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
             }
 
         });
-        return v;
+        return view;
     }
     //이거는 그냥 있으면 좋은거 (네이버에서만 지원한다고 함)
     @Override
@@ -132,8 +144,6 @@ public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
         naverMap.addOnLocationChangeListener(location -> {
             lat = location.getLatitude();
             lng = location.getLongitude();
-            CameraUpdate cameraUpdate = CameraUpdate.scrollTo(new LatLng(lat, lng));
-            naverMap.moveCamera(cameraUpdate);
         });
 >>>>>>> origin/master
     }
