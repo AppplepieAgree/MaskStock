@@ -66,8 +66,8 @@ public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
 
         new MaterialShowcaseView.Builder(a)
                 .setTarget(view.findViewById(R.id.location_refresh))
-                .setDismissText("GOT IT")
-                .setContentText("This is some amazing feature you should know about")
+                .setContentText("버튼을 눌러 약국의 위치정보와\n 마스크 재고 정보를 확인할 수 있습니다.")
+                .setSkipText("확인")
                 .setDelay(1000) // optional but starting animations immediately in onCreate can make them choppy
                 .show();
 
