@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+
 public class MainActivity extends AppCompatActivity{
     String url = "https://blog.naver.com/kfdazzang/221839489769";
     SpannableString site = new SpannableString(url);
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Linkify.addLinks(site, Linkify.ALL);
         show();
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_view);

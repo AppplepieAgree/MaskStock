@@ -27,13 +27,15 @@ import com.naver.maps.map.NaverMapSdk;
 import com.naver.maps.map.OnMapReadyCallback;
 import com.naver.maps.map.util.FusedLocationSource;
 
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
+
+
 public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
     private final static  int LOCATION_REQUEST_CODE = 1001;
     private static final String TAG = "MaskMapFragment";
     private static View view;
     private Activity a;
     private FusedLocationSource locationSource;
-    private StoreResult storeResult;
     private double lat;
     private double lng;
     private NaverMap naverMap;
@@ -49,6 +51,7 @@ public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         if (view != null){
             ViewGroup parent = (ViewGroup) view.getParent();
             if (parent != null) parent.removeView(view);
@@ -58,7 +61,16 @@ public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
         } catch (InflateException e){
 
         }
+
         FloatingActionButton loactionRefresh = view.findViewById(R.id.location_refresh);
+
+        new MaterialShowcaseView.Builder(a)
+                .setTarget(view.findViewById(R.id.location_refresh))
+                .setDismissText("GOT IT")
+                .setContentText("This is some amazing feature you should know about")
+                .setDelay(1000) // optional but starting animations immediately in onCreate can make them choppy
+                .show();
+
         NaverMapSdk.getInstance(a).setClient(
                 new NaverMapSdk.NaverCloudPlatformClient("3gapo17ttk"));
 

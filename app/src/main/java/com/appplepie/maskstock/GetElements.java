@@ -111,18 +111,18 @@ public class GetElements extends AsyncTask<Void, Void, Void> {
 
                 } else if (remain_stat.equals("few")) {
 
-                    marker.setIconTintColor(Color.RED);
+                    marker.setIconTintColor(Color.parseColor("#F63C41"));
 
                 } else if (remain_stat.equals("some")) {
 
-                    marker.setIconTintColor(Color.YELLOW);
+                    marker.setIconTintColor(Color.parseColor("#FFDD3C"));
 
                 } else if (remain_stat.equals("plenty")) {
 
-                    marker.setIconTintColor(Color.GREEN);
+                    marker.setIconTintColor(Color.parseColor("89E894"));
 
                 } else {
-                    marker.setIconTintColor(Color.GRAY);
+                    marker.setIconTintColor(Color.parseColor("AFC9CF"));
                 }
 
 
