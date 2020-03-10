@@ -3,11 +3,18 @@
     <item
         android:id="@+id/bottom_map"
         android:enabled="true"
-        android:icon="@drawable/ic_launcher_foreground"
+        android:icon="@drawable/ic_explore_black_24dp"
         android:title="지도" />
     <item
         android:id="@+id/bottom_info"
         android:enabled="true"
         android:icon="@drawable/ic_launcher_foreground"
         android:title="정보" />
+
+    <item
+        android:id="@+id/more_info"
+        android:enabled="true"
+        android:icon="@drawable/ic_launcher_foreground"
+        android:title="더보기"/>
+
 </menu>

@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity{
 
     private MaskMapFragment maskMapFragment = new MaskMapFragment();
     private InfoFragment infoFragment = new InfoFragment();
+    private MoreInfoFragment moreInfoFragment = new MoreInfoFragment();
 
     FragmentManager fm = getSupportFragmentManager();
 
@@ -62,14 +63,17 @@ public class MainActivity extends AppCompatActivity{
         transaction.replace(R.id.fragment, maskMapFragment).commitAllowingStateLoss();
 
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
-            FragmentTransaction transaction1 = fm.beginTransaction();
             switch (item.getItemId()) {
                 case R.id.bottom_map: {
-                    transaction1.replace(R.id.fragment,maskMapFragment).commitAllowingStateLoss();
+                    transaction.replace(R.id.fragment,maskMapFragment).commitAllowingStateLoss();
                     break;
                 }
                 case R.id.bottom_info: {
-                    transaction1.replace(R.id.fragment,infoFragment).commitAllowingStateLoss();
+                    transaction.replace(R.id.fragment,infoFragment).commitAllowingStateLoss();
+                    break;
+                }
+                case R.id.more_info:{
+                    transaction.replace(R.id.fragment,moreInfoFragment).commitAllowingStateLoss();
                     break;
                 }
             }
