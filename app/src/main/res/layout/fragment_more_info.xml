@@ -5,20 +5,13 @@
     android:layout_height="match_parent"
     tools:context=".MoreInfoFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/item">
-
-
-
-
-
-
-
-    </androidx.recyclerview.widget.RecyclerView>
-
+        android:textSize="30sp"
+        android:text="추후에 구현될 서비스 입니다"
+        android:textColor="#2a75e0"
+        android:gravity="center"/>
 
 
 
