@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     private MaskMapFragment maskMapFragment = new MaskMapFragment();
+    private InfoFragment infoFragment = new InfoFragment();
 
     FragmentManager fm = getSupportFragmentManager();
 
@@ -66,6 +67,10 @@ public class MainActivity extends AppCompatActivity{
             switch (item.getItemId()) {
                 case R.id.bottom_map: {
                     transaction1.replace(R.id.fragment,maskMapFragment).commitAllowingStateLoss();
+                    break;
+                }
+                case R.id.bottom_info: {
+                    transaction1.replace(R.id.fragment,infoFragment).commitAllowingStateLoss();
                     break;
                 }
             }
