@@ -27,6 +27,7 @@ import com.naver.maps.map.OnMapReadyCallback;
 import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.overlay.OverlayImage;
 import com.naver.maps.map.util.FusedLocationSource;
+import com.naver.maps.map.util.MarkerIcons;
 
 public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
     private final static  int LOCATION_REQUEST_CODE = 1001;
@@ -81,68 +82,9 @@ public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
         loactionRefresh.setOnClickListener(v1 -> {
             CameraUpdate cameraUpdate = CameraUpdate.scrollTo(new LatLng(lat, lng));
             naverMap.moveCamera(cameraUpdate);
-            storeResult = new GetElements().getStores(lat, lng);
-            if (storeResult!=null) {
-                for (int i=0; i<storeResult.count; i++){
-                    Marker marker = new Marker();
-                    marker.setPosition(new LatLng(storeResult.stores[i].lat, storeResult.stores[i].lng));
+            GetElements getElements = new GetElements(lat, lng, naverMap);
+            getElements.execute();
 
-                    //iconCustom 원하는 아이콘
-                    switch (storeResult.stores[i].type){
-                        case "01":
-
-                            marker.setIcon(OverlayImage.fromResource(R.drawable.ic_pharmacy));
-                            break;
-                        case "02":
-
-                            marker.setIcon(OverlayImage.fromResource(R.drawable.ic_post_office));
-                            break;
-
-                        case "03":
-
-                            marker.setIcon(OverlayImage.fromResource(R.drawable.ic_nhbank));
-                            break;
-
-                        default:
-
-                            marker.setIcon(OverlayImage.fromResource(R.drawable.ic_pharmacy));
-                            break;
-
-                    }
-                    //iconCustom - 이름 출력
-                    marker.setCaptionText(storeResult.stores[i].name);
-
-
-                    //markerCustom - 색깔 바꾸기
-                    String remain_stat = storeResult.stores[i].remain_stat;
-                    Log.e(TAG, "onCreateView: "+remain_stat );
-                        if (remain_stat == null){
-                            marker.setIconTintColor(Color.GRAY);
-                        }
-                        else if (remain_stat.equals("empty"))
-                        {
-                            marker.setIconTintColor(Color.GRAY);
-
-                        }else if(remain_stat.equals("few")){
-
-                            marker.setIconTintColor(Color.RED);
-
-                        }else if (remain_stat.equals("some")){
-
-                            marker.setIconTintColor(Color.YELLOW);
-
-                        }else if (remain_stat.equals("plenty")){
-
-                            marker.setIconTintColor(Color.GREEN);
-
-                        }else {
-                            marker.setIconTintColor(Color.GRAY);
-                        }
-
-
-                    marker.setMap(naverMap);
-                }
-            }
 
         });
         return view;
