@@ -37,6 +37,7 @@ public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
     private double lat;
     private double lng;
     private NaverMap naverMap;
+    private String type = "";
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -66,10 +67,10 @@ public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
 
         MapFragment mapFragment = (MapFragment)fm.findFragmentById(R.id.map);
 
-        if (mapFragment == null) {
-            mapFragment = MapFragment.newInstance();
-            fm.beginTransaction().add(R.id.map, mapFragment).commit();
-        }
+
+        mapFragment = MapFragment.newInstance();
+        fm.beginTransaction().add(R.id.map, mapFragment).commit();
+
         mapFragment.getMapAsync(this);
 
 
@@ -80,10 +81,10 @@ public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
         loactionRefresh.setOnClickListener(v1 -> {
             CameraUpdate cameraUpdate = CameraUpdate.scrollTo(new LatLng(lat, lng));
             naverMap.moveCamera(cameraUpdate);
-            GetElements getElements = new GetElements(lat, lng, naverMap);
+            GetElements getElements = new GetElements(lat, lng, naverMap, type);
             getElements.execute();
-
-
+            naverMap.setLocationSource(locationSource);
+            naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
         });
         return view;
     }
@@ -103,8 +104,8 @@ public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
     @UiThread
     @Override
     public void onMapReady(@NonNull NaverMap naverMap) {
+        Log.e(TAG, "onMapReady: onMapReady");
         this.naverMap = naverMap;
-        Log.e(TAG, "onMapReady: asd");
         naverMap.setLocationSource(locationSource);
         naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
 

@@ -129,8 +129,6 @@ public class InfoFragment extends Fragment {
                 for (int i =0; i < 4; i++){
                     num[i] = element1.get(i).text();
                     before[i] = element2.get(i).text();
-
-                    Log.e(TAG, "doInBackground: "+num[i]);
                 }
                 for (int i =0; i<3; i++){
                     rNum[i] = element3.get(i).text().split(" ")[0];
