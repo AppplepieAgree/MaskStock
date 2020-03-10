@@ -17,6 +17,7 @@ import androidx.annotation.UiThread;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.naver.maps.geometry.LatLng;
 import com.naver.maps.map.CameraUpdate;
 import com.naver.maps.map.LocationTrackingMode;
@@ -59,7 +60,7 @@ public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
         } catch (InflateException e){
 
         }
-        Button loactionRefresh = view.findViewById(R.id.location_refresh);
+        FloatingActionButton loactionRefresh = view.findViewById(R.id.location_refresh);
         NaverMapSdk.getInstance(a).setClient(
                 new NaverMapSdk.NaverCloudPlatformClient("3gapo17ttk"));
 
