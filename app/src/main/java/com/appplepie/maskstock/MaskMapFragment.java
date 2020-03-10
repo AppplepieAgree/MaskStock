@@ -114,20 +114,24 @@ public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
 
 
                     //markerCustom - 색깔 바꾸기
-
-                        if (storeResult.stores[i].remain_stat >= 1)
+                    String remain_stat = storeResult.stores[i].remain_stat;
+                    Log.e(TAG, "onCreateView: "+remain_stat );
+                        if (remain_stat == null){
+                            marker.setIconTintColor(Color.GRAY);
+                        }
+                        else if (remain_stat.equals("empty"))
                         {
                             marker.setIconTintColor(Color.GRAY);
 
-                        }else if(storeResult.stores[i].remain_stat>=2){
+                        }else if(remain_stat.equals("few")){
 
                             marker.setIconTintColor(Color.RED);
 
-                        }else if (storeResult.stores[i].remain_stat>=30){
+                        }else if (remain_stat.equals("some")){
 
                             marker.setIconTintColor(Color.YELLOW);
 
-                        }else if (storeResult.stores[i].remain_stat>=100){
+                        }else if (remain_stat.equals("plenty")){
 
                             marker.setIconTintColor(Color.GREEN);
 
