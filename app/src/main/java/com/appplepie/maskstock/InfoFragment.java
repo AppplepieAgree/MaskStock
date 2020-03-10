@@ -27,7 +27,7 @@ public class InfoFragment extends Fragment {
     private static String[] num = {"", "", "", ""};
     private static String[] before = {"", "", "", ""};
     private static Elements element1, element2;
-    TextView confirmed, cured, curing, dead;
+    TextView confirmed, cured, curing, dead, confirmed_String, cured_string, curing_String, dead_string;
 
     @Override
     public void onStart() {
@@ -42,6 +42,10 @@ public class InfoFragment extends Fragment {
         cured = v.findViewById(R.id.cured);
         curing = v.findViewById(R.id.curing);
         dead = v.findViewById(R.id.dead);
+        confirmed_String = v.findViewById(R.id.confirmed_string);
+        cured_string = v.findViewById(R.id.cured_string);
+        curing_String = v.findViewById(R.id.curing_string);
+        dead_string = v.findViewById(R.id.dead_stirng);
         JsoupAsyncTask jsoupAsyncTask = new JsoupAsyncTask();
         jsoupAsyncTask.execute();
         return v;
@@ -67,7 +71,6 @@ public class InfoFragment extends Fragment {
                 for (int i =0; i < 4; i++){
                     num[i] = element1.get(i).text();
                     before[i] = element2.get(i).text();
-                    num[i] = num[i] + "\n" + before[i];
                     Log.e(TAG, "doInBackground: "+num[i]);
                 }
 
@@ -84,6 +87,10 @@ public class InfoFragment extends Fragment {
                 cured.setText(num[1]);
                 curing.setText(num[2]);
                 dead.setText(num[3]);
+                confirmed_String.setText(before[0]);
+                cured_string.setText(before[1]);
+                curing_String.setText(before[2]);
+                dead_string.setText(before[3]);
             }
         }
     }
