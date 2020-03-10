@@ -27,16 +27,19 @@ import com.naver.maps.map.NaverMapSdk;
 import com.naver.maps.map.OnMapReadyCallback;
 import com.naver.maps.map.util.FusedLocationSource;
 
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
+
+
 public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
     private final static  int LOCATION_REQUEST_CODE = 1001;
     private static final String TAG = "MaskMapFragment";
     private static View view;
     private Activity a;
     private FusedLocationSource locationSource;
-    private StoreResult storeResult;
     private double lat;
     private double lng;
     private NaverMap naverMap;
+    private String type = "";
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -49,7 +52,6 @@ public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-
         if (view != null){
             ViewGroup parent = (ViewGroup) view.getParent();
             if (parent != null) parent.removeView(view);
@@ -59,7 +61,16 @@ public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
         } catch (InflateException e){
 
         }
+
         FloatingActionButton loactionRefresh = view.findViewById(R.id.location_refresh);
+
+        new MaterialShowcaseView.Builder(a)
+                .setTarget(view.findViewById(R.id.location_refresh))
+                .setDismissText("GOT IT")
+                .setContentText("This is some amazing feature you should know about")
+                .setDelay(1000) // optional but starting animations immediately in onCreate can make them choppy
+                .show();
+
         NaverMapSdk.getInstance(a).setClient(
                 new NaverMapSdk.NaverCloudPlatformClient("3gapo17ttk"));
 
@@ -68,20 +79,24 @@ public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
 
         MapFragment mapFragment = (MapFragment)fm.findFragmentById(R.id.map);
 
+
         mapFragment = MapFragment.newInstance();
         fm.beginTransaction().add(R.id.map, mapFragment).commit();
 
         mapFragment.getMapAsync(this);
 
-        locationSource = new FusedLocationSource(this,LOCATION_REQUEST_CODE);
+
+        //위치 반환하기 좋게하는 그런거
+        locationSource =
+                new FusedLocationSource(this, LOCATION_REQUEST_CODE);
 
         loactionRefresh.setOnClickListener(v1 -> {
             CameraUpdate cameraUpdate = CameraUpdate.scrollTo(new LatLng(lat, lng));
             naverMap.moveCamera(cameraUpdate);
-            GetElements getElements = new GetElements(lat, lng, naverMap);
+            GetElements getElements = new GetElements(lat, lng, naverMap, type);
             getElements.execute();
-
-
+            naverMap.setLocationSource(locationSource);
+            naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
         });
         return view;
     }
@@ -101,16 +116,15 @@ public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
     @UiThread
     @Override
     public void onMapReady(@NonNull NaverMap naverMap) {
+        Log.e(TAG, "onMapReady: onMapReady");
         this.naverMap = naverMap;
-        Log.e(TAG, "onMapReady: asd");
-
         naverMap.setLocationSource(locationSource);
         naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
+
         //location.getLatitude = 위도 location.getLongitude() = 경도
         naverMap.addOnLocationChangeListener(location -> {
             lat = location.getLatitude();
             lng = location.getLongitude();
-
         });
     }
 }
