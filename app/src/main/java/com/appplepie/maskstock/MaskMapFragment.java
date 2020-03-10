@@ -2,6 +2,7 @@ package com.appplepie.maskstock;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.InflateException;
@@ -24,6 +25,7 @@ import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.NaverMapSdk;
 import com.naver.maps.map.OnMapReadyCallback;
 import com.naver.maps.map.overlay.Marker;
+import com.naver.maps.map.overlay.OverlayImage;
 import com.naver.maps.map.util.FusedLocationSource;
 
 public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
@@ -35,7 +37,7 @@ public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
     private StoreResult storeResult;
     private double lat;
     private double lng;
-    NaverMap naverMap;
+    private NaverMap naverMap;
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -84,6 +86,56 @@ public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
                 for (int i=0; i<storeResult.count; i++){
                     Marker marker = new Marker();
                     marker.setPosition(new LatLng(storeResult.stores[i].lat, storeResult.stores[i].lng));
+
+                    //iconCustom 원하는 아이콘
+                    switch (storeResult.stores[i].type){
+                        case "01":
+
+                            marker.setIcon(OverlayImage.fromResource(R.drawable.ic_pharmacy));
+                            break;
+                        case "02":
+
+                            marker.setIcon(OverlayImage.fromResource(R.drawable.ic_post_office));
+                            break;
+
+                        case "03":
+
+                            marker.setIcon(OverlayImage.fromResource(R.drawable.ic_nhbank));
+                            break;
+
+                        default:
+
+                            marker.setIcon(OverlayImage.fromResource(R.drawable.ic_pharmacy));
+                            break;
+
+                    }
+                    //iconCustom - 이름 출력
+                    marker.setCaptionText(storeResult.stores[i].name);
+
+
+                    //markerCustom - 색깔 바꾸기
+
+                        if (storeResult.stores[i].remain_stat >= 1)
+                        {
+                            marker.setIconTintColor(Color.GRAY);
+
+                        }else if(storeResult.stores[i].remain_stat>=2){
+
+                            marker.setIconTintColor(Color.RED);
+
+                        }else if (storeResult.stores[i].remain_stat>=30){
+
+                            marker.setIconTintColor(Color.YELLOW);
+
+                        }else if (storeResult.stores[i].remain_stat>=100){
+
+                            marker.setIconTintColor(Color.GREEN);
+
+                        }else {
+                            marker.setIconTintColor(Color.GRAY);
+                        }
+
+
                     marker.setMap(naverMap);
                 }
             }
