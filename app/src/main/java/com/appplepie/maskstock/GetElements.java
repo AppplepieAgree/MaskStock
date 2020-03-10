@@ -119,10 +119,10 @@ public class GetElements extends AsyncTask<Void, Void, Void> {
 
                 } else if (remain_stat.equals("plenty")) {
 
-                    marker.setIconTintColor(Color.parseColor("89E894"));
+                    marker.setIconTintColor(Color.parseColor("#89E894"));
 
                 } else {
-                    marker.setIconTintColor(Color.parseColor("AFC9CF"));
+                    marker.setIconTintColor(Color.parseColor("#AFC9CF"));
                 }
 
 
