@@ -68,11 +68,6 @@ public class InfoFragment extends Fragment {
 
         Typeface tf = Typeface.createFromAsset(getContext().getAssets(), "OpenSans-Light.ttf");
 
-        chart.setCenterTextTypeface(tf);
-        chart.setCenterText(generateCenterText());
-        chart.setCenterTextSize(10f);
-        chart.setCenterTextTypeface(tf);
-
         // radius of the center hole in percent of maximum radius
         chart.setHoleRadius(45f);
         chart.setTransparentCircleRadius(50f);
