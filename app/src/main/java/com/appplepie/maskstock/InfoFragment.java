@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,8 +31,10 @@ public class InfoFragment extends Fragment {
     TextView confirmed, cured, curing, dead, confirmed_String, cured_string, curing_String, dead_string;
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        JsoupAsyncTask jsoupAsyncTask = new JsoupAsyncTask();
+        jsoupAsyncTask.execute();
     }
 
     @Nullable
@@ -46,8 +49,6 @@ public class InfoFragment extends Fragment {
         cured_string = v.findViewById(R.id.cured_string);
         curing_String = v.findViewById(R.id.curing_string);
         dead_string = v.findViewById(R.id.dead_stirng);
-        JsoupAsyncTask jsoupAsyncTask = new JsoupAsyncTask();
-        jsoupAsyncTask.execute();
         return v;
     }
     private class JsoupAsyncTask extends AsyncTask<Void, Void, Void> {

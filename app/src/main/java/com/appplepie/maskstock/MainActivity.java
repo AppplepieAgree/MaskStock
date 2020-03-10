@@ -58,11 +58,12 @@ public class MainActivity extends AppCompatActivity{
         Linkify.addLinks(site, Linkify.ALL);
         show();
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_view);
+        FragmentTransaction transaction1 = fm.beginTransaction();
+        transaction1.replace(R.id.fragment,maskMapFragment).commitAllowingStateLoss();
 
-        FragmentTransaction transaction = fm.beginTransaction();
-        transaction.replace(R.id.fragment, maskMapFragment).commitAllowingStateLoss();
 
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+            FragmentTransaction transaction = fm.beginTransaction();
             switch (item.getItemId()) {
                 case R.id.bottom_map: {
                     transaction.replace(R.id.fragment,maskMapFragment).commitAllowingStateLoss();
@@ -76,7 +77,9 @@ public class MainActivity extends AppCompatActivity{
                     transaction.replace(R.id.fragment,moreInfoFragment).commitAllowingStateLoss();
                     break;
                 }
+
             }
+
 
             return true;
         });
