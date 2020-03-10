@@ -1,33 +1,4 @@
 package com.appplepie.maskstock;
-
-<<<<<<< HEAD
-import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-
-/**
- * A simple {@link Fragment} subclass.
- */
-public class MaskMapFragment extends Fragment {
-
-    public MaskMapFragment() {
-        // Required empty public constructor
-    }
-
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-
-        View view = inflater.inflate(R.layout.fragment_mask_map, container, false);
-        return view;
-=======
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -52,10 +23,11 @@ import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.NaverMapSdk;
 import com.naver.maps.map.OnMapReadyCallback;
 import com.naver.maps.map.overlay.Marker;
+import com.naver.maps.map.overlay.OverlayImage;
 import com.naver.maps.map.util.FusedLocationSource;
 
 public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
-    private final static  int LOCATION_REQUEST_CODE = 1001;
+    private final static int LOCATION_REQUEST_CODE = 1001;
     private static final String TAG = "MaskMapFragment";
     private static View view;
     private Activity a;
@@ -64,6 +36,7 @@ public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
     private double lat;
     private double lng;
     NaverMap naverMap;
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -91,7 +64,7 @@ public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
 
         FragmentManager fm = getFragmentManager();
 
-        MapFragment mapFragment = (MapFragment)fm.findFragmentById(R.id.map);
+        MapFragment mapFragment = (MapFragment) fm.findFragmentById(R.id.map);
 
         if (mapFragment == null) {
             mapFragment = MapFragment.newInstance();
@@ -108,21 +81,50 @@ public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
             CameraUpdate cameraUpdate = CameraUpdate.scrollTo(new LatLng(lat, lng));
             naverMap.moveCamera(cameraUpdate);
             storeResult = new GetElements().getStores(lat, lng);
-            if (storeResult!=null) {
-                for (int i=0; i<storeResult.count; i++){
+            if (storeResult != null) {
+                for (int i = 0; i < storeResult.count; i++) {
                     Marker marker = new Marker();
                     marker.setPosition(new LatLng(storeResult.stores[i].lat, storeResult.stores[i].lng));
+
+                    //iconCustom 원하는 아이콘
+                    switch (storeResult.stores[i].type){
+                        case "01":
+                            marker.setIcon(OverlayImage.fromResource(R.drawable.ic_android_black_24dp));
+                            break;
+                        case "02":
+                            marker.setIcon(OverlayImage.fromResource(R.drawable.ic_android_black_24dp));
+                            break;
+
+                        case "03":
+                            marker.setIcon(OverlayImage.fromResource(R.drawable.ic_android_black_24dp));
+                            break;
+                        default:
+                            marker.setIcon(OverlayImage.fromResource(R.drawable.ic_android_black_24dp));
+                            break;
+                    }
+                    //iconCustom - 이름 출력
+                    marker.setCaptionText(storeResult.stores[i].name);
+
+                    //markerCustom - 색깔 바꾸기
+
+                    switch (storeResult.stores[i].remain_stat){
+
+                    }
+
+                    //marker출력
                     marker.setMap(naverMap);
+
                 }
             }
 
         });
         return view;
     }
+
     //이거는 그냥 있으면 좋은거 (네이버에서만 지원한다고 함)
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,  @NonNull int[] grantResults) {
+                                           @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (locationSource.onRequestPermissionsResult(
                 requestCode, permissions, grantResults)) {
             return;
@@ -145,6 +147,5 @@ public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
             lat = location.getLatitude();
             lng = location.getLongitude();
         });
->>>>>>> origin/master
     }
 }

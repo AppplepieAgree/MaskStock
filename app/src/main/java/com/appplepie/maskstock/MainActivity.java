@@ -1,77 +1,180 @@
 package com.appplepie.maskstock;
 
-import androidx.appcompat.app.AlertDialog;
+import androidx.annotation.NonNull;
+import androidx.annotation.UiThread;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
-import android.text.Html;
-import android.text.SpannableString;
-import android.text.method.LinkMovementMethod;
-import android.text.util.Linkify;
-import android.widget.TextView;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.Gson;
 
-public class MainActivity extends AppCompatActivity{
-    String url = "https://blog.naver.com/kfdazzang/221839489769";
-    SpannableString site = new SpannableString(url);
-    void show(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("안내사항");
-        builder.setCancelable(false);
-        builder.setMessage("전국의 약사님, 현장에서 열심히 일해주시는 모든 종사자 분들께 감사의 인사를 표합니다.\n\n " +
-                "다음 안내사항을 꼭 숙지하신다음 앱을 이용해주시기 바랍니다." + "\n\n" +
-                "1.본 앱에서 제공하는 마스크 재고에 관한 정보는 최소 5분이상 지연된 정보입니다\n"+
-                "2.공적 마스크 관련 안내는 식약처 블로그 및 홈페이지를 참고해주세요\n"+
-                "3.앱에서 표시되는 재고량은 실제 재고량과 많은 차이가 있을 수 있습니다.\n"+
-                "재고수량은 참고용으로만 이용 부탁드립니다.");
-        builder.setPositiveButton("내용을 확인했습니다", (dialog, which) -> {showUrl();});
-        AlertDialog dialog = builder.create();
-        dialog.show();
-        ((TextView) dialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
-    }
-    void showUrl(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("식약처 공적마스크 참고 링크");
-        builder.setCancelable(false);
-        builder.setMessage(site);
-        builder.setPositiveButton("내용을 확인했습니다", (dialog, which) -> {});
-        AlertDialog dialog = builder.create();
-        dialog.show();
-        ((TextView) dialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
+import com.naver.maps.geometry.LatLng;
+import com.naver.maps.map.CameraUpdate;
+import com.naver.maps.map.LocationTrackingMode;
+import com.naver.maps.map.MapFragment;
+import com.naver.maps.map.NaverMap;
+import com.naver.maps.map.NaverMapSdk;
+import com.naver.maps.map.OnMapReadyCallback;
+import com.naver.maps.map.util.FusedLocationSource;
 
-    }
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-    private MaskMapFragment maskMapFragment = new MaskMapFragment();
+    private final static  int LOCATION_REQUEST_CODE = 1001;
+    private FusedLocationSource locationSource;
+    String REQUEST_URL;
+    String result;
+    double lat;
+    double lng;
+    Button loaction_refresh;
+    StoreResult storeResult;
+    private static final String TAG = "MainActivity";
 
-    FragmentManager fm = getSupportFragmentManager();
+    public StoreResult getStores (double lat, double lng){ //스토어 가져오기
+        REQUEST_URL = String.format("https://8oi9s0nnth.apigw.ntruss.com/corona19-masks/v1/storesByGeo/json?lat=%f&lng=%f&m=3000", lat, lng);
+        Log.e(TAG, "getStores: "+ REQUEST_URL );
 
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL url = new URL(REQUEST_URL);
+                    HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+
+//                    httpURLConnection.setReadTimeout(3000);
+//                    httpURLConnection.setConnectTimeout(3000);
+//                    httpURLConnection.setDoInput(true);
+//                    httpURLConnection.setDoOutput(true);
+//                    httpURLConnection.setRequestMethod("GET");
+//                    httpURLConnection.setUseCaches(false);
+//                    httpURLConnection.connect();
+
+                    int responseStatusCode = httpURLConnection.getResponseCode();
+                    InputStream inputStream;
+                    if (responseStatusCode == HttpURLConnection.HTTP_OK){
+                        inputStream = httpURLConnection.getInputStream();
+                    }else {
+                        inputStream = httpURLConnection.getErrorStream();
+                        Log.e(TAG, "run: Error" );
+                    }
+                    InputStreamReader inputStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+                    BufferedReader bufferedReader =  new BufferedReader(inputStreamReader);
+
+                    StringBuilder sb = new StringBuilder();
+                    String line;
+
+                    while ((line = bufferedReader.readLine()) != null){
+                        sb.append(line);
+                    }
+                    bufferedReader.close();
+                    httpURLConnection.disconnect();
+                    result = sb.toString();
+                    Log.e(TAG, "run: "+result);
+
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Gson gson = new Gson();
+        StoreResult storeResult = gson.fromJson(result, StoreResult.class);
+        Log.e(TAG, "onCreate: "+storeResult.stores.length );
+        return storeResult;
+    } // 스토어 가져오기 끝
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Linkify.addLinks(site, Linkify.ALL);
-        show();
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_view);
+        loaction_refresh = findViewById(R.id.location_refresh);
 
-        FragmentTransaction transaction = fm.beginTransaction();
-        transaction.replace(R.id.fragment, maskMapFragment).commitAllowingStateLoss();
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
-            FragmentTransaction transaction1 = fm.beginTransaction();
-            switch (item.getItemId()) {
-                case R.id.bottom_map: {
-                    transaction1.replace(R.id.fragment,maskMapFragment).commitAllowingStateLoss();
-                    break;
-                }
+
+        NaverMapSdk.getInstance(this).setClient(
+                new NaverMapSdk.NaverCloudPlatformClient("3gapo17ttk"));
+
+
+
+
+
+
+        FragmentManager fm = getSupportFragmentManager();
+
+        MapFragment mapFragment = (MapFragment)fm.findFragmentById(R.id.map);
+
+        if (mapFragment == null) {
+            mapFragment = MapFragment.newInstance();
+            fm.beginTransaction().add(R.id.map, mapFragment).commit();
+        }
+        mapFragment.getMapAsync(this);
+
+
+        //위치 반환하기 좋게하는 그런거
+        locationSource =
+                new FusedLocationSource(this, LOCATION_REQUEST_CODE);
+
+        loaction_refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                storeResult = getStores(lat, lng);
+                Toast.makeText(getApplicationContext(), storeResult.count+"", Toast.LENGTH_SHORT).show();
+
             }
-
-            return true;
         });
+
+
+
+
+    }
+
+    //이거는 그냥 있으면 좋은거 (네이버에서만 지원한다고 함)
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,  @NonNull int[] grantResults) {
+        if (locationSource.onRequestPermissionsResult(
+                requestCode, permissions, grantResults)) {
+            return;
+        }
+        super.onRequestPermissionsResult(
+                requestCode, permissions, grantResults);
+
+    }
+
+    @UiThread
+    @Override
+    public void onMapReady(@NonNull NaverMap naverMap) {
+        Log.e(TAG, "onMapReady: asd");
+        naverMap.setLocationSource(locationSource);
+        naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
+
+        //location.getLatitude = 위도 location.getLongitude() = 경도
+        naverMap.addOnLocationChangeListener(location ->{
+            lat = location.getLatitude(); lng = location.getLongitude();
+            CameraUpdate cameraUpdate = CameraUpdate.scrollTo(new LatLng(lat, lng));
+            naverMap.moveCamera(cameraUpdate);
+        });
+
+
+
+
 
 
 
