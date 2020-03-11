@@ -44,6 +44,7 @@ public class InfoFragment extends Fragment {
     TextView confirmed, cured, curing, dead, confirmed_String, cured_string, curing_String, dead_string;
     PieChart chart;
     static String[] rNum = {"", "", ""};
+    Legend l;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -71,7 +72,7 @@ public class InfoFragment extends Fragment {
         chart.setHoleRadius(45f);
         chart.setTransparentCircleRadius(50f);
 
-        Legend l = chart.getLegend();
+        l = chart.getLegend();
         l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
         l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
         l.setOrientation(Legend.LegendOrientation.VERTICAL);
@@ -152,6 +153,8 @@ public class InfoFragment extends Fragment {
             }
             if (element3 !=null) {
                 chart.setData(generatePieData());
+                l.setEnabled(false);
+                chart.invalidate();
             }
         }
     }

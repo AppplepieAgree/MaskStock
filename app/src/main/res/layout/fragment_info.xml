@@ -227,14 +227,6 @@
             android:layout_height="match_parent"
             android:id="@+id/piechart"
             />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/asd"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:text="그래프 추후 제공예정"
-            android:fontFamily="@font/notosans_bold"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
