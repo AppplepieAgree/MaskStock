@@ -11,12 +11,22 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="식약처 권고사항"
+            android:textColor="#000"
+            android:fontFamily="@font/notosans_bold"
+            android:textSize="22sp"
+            android:layout_marginStart="8dp"/>
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/web_view_rv"/>
     </LinearLayout>
+
 
 
 </LinearLayout>

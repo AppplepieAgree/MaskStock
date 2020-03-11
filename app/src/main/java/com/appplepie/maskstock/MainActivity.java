@@ -27,10 +27,12 @@ public class MainActivity extends AppCompatActivity{
         builder.setCancelable(false);
         builder.setMessage("전국의 약사님, 현장에서 열심히 일해주시는 모든 종사자 분들께 감사의 인사를 표합니다.\n\n " +
                 "다음 안내사항을 꼭 숙지하신다음 앱을 이용해주시기 바랍니다." + "\n\n" +
-                "1.본 앱에서 제공하는 마스크 재고에 관한 정보는 최소 5분이상 지연된 정보입니다\n"+
-                "2.공적 마스크 관련 안내는 식약처 블로그 및 홈페이지를 참고해주세요\n"+
-                "3.앱에서 표시되는 재고량은 실제 재고량과 많은 차이가 있을 수 있습니다.\n"+
-                "재고수량은 참고용으로만 이용 부탁드립니다.");
+                "1.본 앱에서 제공하는 마스크 재고에 관한 정보는 최소 5분이상 지연된 정보입니다\n\n"+
+                "2.공적 마스크 관련 안내는 식약처 블로그 및 홈페이지를 참고해주세요\n\n"+
+                "3.앱에서 표시되는 재고량은 실제 재고량과 많은 차이가 있을 수 있습니다.\n\n"+
+                "재고수량은 참고용으로만 이용 부탁드립니다."+"" +
+                "\n\n마스크의 재고정보는 08시 부터 23시 사이에만 운영되며," +
+                "2020년 3월 15일 까지는 시범운영기간입니다.");
         builder.setPositiveButton("내용을 확인했습니다", (dialog, which) -> {showUrl();});
         AlertDialog dialog = builder.create();
         dialog.show();
@@ -40,18 +42,6 @@ public class MainActivity extends AppCompatActivity{
     void showUrl(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("식약처 공적마스크 참고 링크");
-        builder.setCancelable(false);
-        builder.setMessage(site);
-        builder.setPositiveButton("내용을 확인했습니다", (dialog, which) -> {});
-        AlertDialog dialog = builder.create();
-        dialog.show();
-        ((TextView) dialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
-
-    }
-    void showAlert(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("마스크의 재고정보는 08시 부터 23시 사이에만 운영되며,\n" +
-                "2020년 3월 15일 까지는 시범운영기간입니다.");
         builder.setCancelable(false);
         builder.setMessage(site);
         builder.setPositiveButton("내용을 확인했습니다", (dialog, which) -> {});

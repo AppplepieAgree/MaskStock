@@ -95,7 +95,11 @@ public class InfoFragment extends Fragment {
         ds1.setValueTextSize(12f);
 
         PieData d = new PieData(ds1);
-        d.setValueTypeface(Typeface.createFromAsset(getContext().getAssets(), "OpenSans-Light.ttf"));
+        Context context = getContext();
+        if (context != null) {
+            d.setValueTypeface(Typeface.createFromAsset(getContext().getAssets(), "OpenSans-Light.ttf"));
+        }
+
 
         return d;
     }

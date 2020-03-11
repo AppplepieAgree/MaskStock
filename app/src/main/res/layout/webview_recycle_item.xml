@@ -12,7 +12,7 @@
         android:layout_marginTop="6dp"
         android:layout_marginHorizontal="6dp">
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text = "urlsasdasd"
             android:textSize="22sp"
@@ -20,7 +20,8 @@
             android:id="@+id/tv_webView_title"
             android:textColor="#000"
             android:fontFamily="@font/notosans_bold"
-            android:gravity="center"/>
+            android:layout_gravity="center"
+            android:layout_marginTop="-4dp"/>
 
         <View
             android:layout_width="2dp"

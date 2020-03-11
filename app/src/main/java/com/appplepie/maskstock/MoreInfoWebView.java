@@ -10,23 +10,29 @@ import android.webkit.WebView;
 public class MoreInfoWebView extends WebView {
     public MoreInfoWebView(Context context) {
         super(context);
+        initDefaultSetting();
     }
 
     public MoreInfoWebView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        initDefaultSetting();
     }
 
     public MoreInfoWebView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        initDefaultSetting();
     }
 
     public MoreInfoWebView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+        initDefaultSetting();
     }
     @SuppressLint("SetJavaScriptEnabled")
     private void initDefaultSetting(){
         WebSettings webSettings = this.getSettings();
         webSettings.setJavaScriptEnabled(true);
+        webSettings.setUseWideViewPort(true);
+
         setWebChromeClient(new WebChromeClient());
         setWebViewClient(new InfoWebViewClient());
     }
