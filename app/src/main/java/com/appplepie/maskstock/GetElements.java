@@ -97,7 +97,6 @@ public class GetElements extends AsyncTask<Void, Void, Void> {
                 marker.setPosition(new LatLng(storeResult.stores[i].lat, storeResult.stores[i].lng));
                 marker.setCaptionText(storeResult.stores[i].name);
                 marker.setCaptionTextSize(12);
-                marker.setHideCollidedMarkers(true);
                 marker.setWidth(95);
                 marker.setHeight(135);
 
