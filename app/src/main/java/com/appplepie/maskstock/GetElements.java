@@ -47,7 +47,7 @@ public class GetElements extends AsyncTask<Void, Void, Void> {
         final String TAG = "getElements";
         String REQUEST_URL;
         final String[] result = new String[1];//스토어 가져오기
-        REQUEST_URL = String.format("https://8oi9s0nnth.apigw.ntruss.com/corona19-masks/v1/storesByGeo/json?lat=%f&lng=%f&m=3000", lat, lng);
+        REQUEST_URL = String.format("https://8oi9s0nnth.apigw.ntruss.com/corona19-masks/v2/storesByGeo/json?lat=%f&lng=%f&m=3000", lat, lng);
         Log.e(TAG, "getStores: " + REQUEST_URL);
         try {
             URL url = new URL(REQUEST_URL);
