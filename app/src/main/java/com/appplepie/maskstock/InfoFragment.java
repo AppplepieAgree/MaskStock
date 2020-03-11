@@ -77,8 +77,6 @@ public class InfoFragment extends Fragment {
         l.setOrientation(Legend.LegendOrientation.VERTICAL);
         l.setDrawInside(false);
 
-
-
         return v;
     }
     private PieData generatePieData() {

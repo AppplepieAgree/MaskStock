@@ -107,7 +107,7 @@ public class GetElements extends AsyncTask<Void, Void, Void> {
                 if (remain_stat == null) {
                     marker.setIconTintColor(Color.GRAY);
                 } else if (remain_stat.equals("empty")) {
-                    marker.setIconTintColor(Color.GRAY);
+                    marker.setIconTintColor(Color.parseColor("#AFC9CF"));
 
                 } else if (remain_stat.equals("few")) {
 

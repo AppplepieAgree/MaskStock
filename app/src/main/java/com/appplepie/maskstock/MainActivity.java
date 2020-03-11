@@ -5,16 +5,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
 public class MainActivity extends AppCompatActivity{
+    private static final String TAG = "MainActivity";
     String url = "https://blog.naver.com/kfdazzang/221839489769";
     SpannableString site = new SpannableString(url);
     void show(){
@@ -44,6 +48,18 @@ public class MainActivity extends AppCompatActivity{
         ((TextView) dialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
 
     }
+    void showAlert(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("마스크의 재고정보는 08시 부터 23시 사이에만 운영되며,\n" +
+                "2020년 3월 15일 까지는 시범운영기간입니다.");
+        builder.setCancelable(false);
+        builder.setMessage(site);
+        builder.setPositiveButton("내용을 확인했습니다", (dialog, which) -> {});
+        AlertDialog dialog = builder.create();
+        dialog.show();
+        ((TextView) dialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
+
+    }
 
     private MaskMapFragment maskMapFragment = new MaskMapFragment();
     private InfoFragment infoFragment = new InfoFragment();
@@ -56,7 +72,12 @@ public class MainActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        SharedPreferences sharedPreferences = getSharedPreferences("sFile", 0);
+        if (!sharedPreferences.getBoolean("tutorial", false)){
+            Log.e(TAG, "onCreate: "+sharedPreferences.getBoolean("tutorial", false) );
+            Intent intent = new Intent(this, IntroActivity.class);
+            startActivity(intent);
+        }
         Linkify.addLinks(site, Linkify.ALL);
         show();
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_view);

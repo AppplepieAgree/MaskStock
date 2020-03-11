@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,8 +28,6 @@ import com.naver.maps.map.NaverMapSdk;
 import com.naver.maps.map.OnMapReadyCallback;
 import com.naver.maps.map.util.FusedLocationSource;
 
-import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
-
 
 public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
     private final static  int LOCATION_REQUEST_CODE = 1001;
@@ -40,6 +39,7 @@ public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
     private double lng;
     private NaverMap naverMap;
     private String type = "";
+    private String id = "3gapo17ttk";
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -63,16 +63,8 @@ public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
         }
 
         FloatingActionButton loactionRefresh = view.findViewById(R.id.location_refresh);
-
-        new MaterialShowcaseView.Builder(a)
-                .setTarget(view.findViewById(R.id.location_refresh))
-                .setContentText("버튼을 눌러 약국의 위치정보와\n 마스크 재고 정보를 확인할 수 있습니다.")
-                .setSkipText("확인")
-                .setDelay(1000) // optional but starting animations immediately in onCreate can make them choppy
-                .show();
-
         NaverMapSdk.getInstance(a).setClient(
-                new NaverMapSdk.NaverCloudPlatformClient("3gapo17ttk"));
+                new NaverMapSdk.NaverCloudPlatformClient(id));
 
 
         FragmentManager fm = getFragmentManager();
@@ -91,6 +83,7 @@ public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
                 new FusedLocationSource(this, LOCATION_REQUEST_CODE);
 
         loactionRefresh.setOnClickListener(v1 -> {
+            Toast.makeText(getContext(), "최대 5초가량 소요될 수 있습니다", Toast.LENGTH_SHORT).show();
             CameraUpdate cameraUpdate = CameraUpdate.scrollTo(new LatLng(lat, lng));
             naverMap.moveCamera(cameraUpdate);
             GetElements getElements = new GetElements(lat, lng, naverMap, type);
