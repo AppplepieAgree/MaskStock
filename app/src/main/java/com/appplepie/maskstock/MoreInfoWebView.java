@@ -32,6 +32,8 @@ public class MoreInfoWebView extends WebView {
         WebSettings webSettings = this.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webSettings.setUseWideViewPort(true);
+        webSettings.setDomStorageEnabled(true);
+        webSettings.setUseWideViewPort(true);
 
         setWebChromeClient(new WebChromeClient());
         setWebViewClient(new InfoWebViewClient());
