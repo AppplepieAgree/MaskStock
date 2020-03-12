@@ -1,25 +1,23 @@
 package com.appplepie.maskstock;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.PointF;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
 import com.naver.maps.geometry.LatLng;
 import com.naver.maps.map.NaverMap;
+import com.naver.maps.map.overlay.InfoWindow;
 import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.overlay.Overlay;
 import com.naver.maps.map.util.MarkerIcons;
 
-import org.jsoup.Connection;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -29,8 +27,6 @@ import java.nio.charset.StandardCharsets;
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class GetElements extends AsyncTask<Void, Void, Void> {
-    private Context context;
-
     public GetElements(double lat, double lng, NaverMap naverMap, String type) {
         this.lat = lat;
         this.lng = lng;
@@ -49,7 +45,6 @@ public class GetElements extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... params) {
-
         final String TAG = "getElements";
         String REQUEST_URL;
         final String[] result = new String[1];//스토어 가져오기
@@ -96,7 +91,8 @@ public class GetElements extends AsyncTask<Void, Void, Void> {
             Log.e(TAG, "onPostExecute: 1" );
         }
     }
-    void setMarker(String type){
+    private void setMarker(String type){
+
         for (int i = 0; i < storeResult.count; i++) {
             Marker marker = new Marker();
             if (type.equals("") || storeResult.stores[i].type.equals(type)){
@@ -105,8 +101,15 @@ public class GetElements extends AsyncTask<Void, Void, Void> {
                 marker.setCaptionTextSize(12);
                 marker.setWidth(95);
                 marker.setHeight(135);
-
                 marker.setIcon(MarkerIcons.BLACK);
+//                marker.setOnClickListener(new Overlay.OnClickListener() {
+//                    @Override
+//                    public boolean onClick(@NonNull Overlay overlay) {
+//                        InfoWindow infoWindow = new InfoWindow(InfoWindow.DEFAULT_ADAPTER);
+//                        infoWindow.open(marker);
+//                        return true;
+//                    }
+//                });
                 //markerCustom - 색깔 바꾸기
                 String remain_stat = storeResult.stores[i].remain_stat;
                 if (remain_stat == null) {
@@ -129,7 +132,7 @@ public class GetElements extends AsyncTask<Void, Void, Void> {
                 } else {
                     marker.setIconTintColor(Color.parseColor("#AFC9CF"));
                 }
-
+                
 
 
 

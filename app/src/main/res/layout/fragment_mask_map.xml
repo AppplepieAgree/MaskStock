@@ -44,8 +44,8 @@
 <!--        android:background="@drawable/radius"-->
 <!--        />-->
     <View
-        android:layout_width="120dp"
-        android:layout_height="54dp"
+        android:layout_width="150sp"
+        android:layout_height="66sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:background="#A3FFFFFF"
@@ -66,7 +66,7 @@
         android:layout_height="wrap_content"
         android:text="품절"
         android:id="@+id/sold_out"
-        android:textSize="10sp"
+        android:textSize="14sp"
         android:textColor="#000"
         app:layout_constraintBottom_toBottomOf="@id/view_grey"
         app:layout_constraintLeft_toRightOf="@id/view_grey"/>
@@ -75,7 +75,7 @@
         android:layout_height="wrap_content"
         android:text="2개이상 30개 미만"
         android:id="@+id/few"
-        android:textSize="10sp"
+        android:textSize="14sp"
         android:textColor="#000"
         app:layout_constraintBottom_toTopOf="@id/view_grey"
         app:layout_constraintLeft_toRightOf="@id/view_red"/>
@@ -85,7 +85,7 @@
         android:text="30개이상 100개 미만"
         android:id="@+id/some"
         android:textColor="#000"
-        android:textSize="10sp"
+        android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@id/view_red"
         app:layout_constraintLeft_toRightOf="@id/view_grey"/>
     <TextView
@@ -93,36 +93,39 @@
         android:layout_height="wrap_content"
         android:text="100개이상"
         android:id="@+id/plenty"
-        android:textSize="10sp"
+        android:textSize="14sp"
         android:textColor="#000"
         app:layout_constraintBottom_toTopOf="@id/view_yellow"
         app:layout_constraintLeft_toRightOf="@id/view_grey"/>
 
     <View
-        android:layout_width="12dp"
-        android:layout_height="12dp"
+        android:layout_width="14sp"
+        android:layout_height="14sp"
         android:id="@+id/view_green"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toTopOf="@id/view_yellow"
-        android:background="#89E894"/>
+        android:background="#89E894"
+        android:layout_marginBottom="2sp"/>
     <View
-        android:layout_width="12dp"
-        android:layout_height="12dp"
+        android:layout_width="14sp"
+        android:layout_height="14sp"
         android:id="@+id/view_yellow"
         app:layout_constraintBottom_toTopOf="@id/view_red"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:background="#FFDD3C"/>
+        android:background="#FFDD3C"
+        android:layout_marginBottom="2sp"/>
     <View
-        android:layout_width="12dp"
-        android:layout_height="12dp"
+        android:layout_width="14sp"
+        android:layout_height="14sp"
         android:id="@+id/view_red"
         app:layout_constraintBottom_toTopOf="@id/view_grey"
         app:layout_constraintVertical_bias="0.2"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:background="#F63C41"/>
+        android:background="#F63C41"
+        android:layout_marginBottom="2sp"/>
     <View
-        android:layout_width="12dp"
-        android:layout_height="12dp"
+        android:layout_width="14sp"
+        android:layout_height="14sp"
         android:id="@+id/view_grey"
         app:layout_constraintLeft_toLeftOf="parent"
         android:background="#AFC9CF"
