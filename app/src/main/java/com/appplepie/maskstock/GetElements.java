@@ -1,13 +1,17 @@
 package com.appplepie.maskstock;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.naver.maps.geometry.LatLng;
 import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.overlay.Marker;
+import com.naver.maps.map.overlay.Overlay;
 import com.naver.maps.map.util.MarkerIcons;
 
 import org.jsoup.Connection;
@@ -25,6 +29,8 @@ import java.nio.charset.StandardCharsets;
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class GetElements extends AsyncTask<Void, Void, Void> {
+    private Context context;
+
     public GetElements(double lat, double lng, NaverMap naverMap, String type) {
         this.lat = lat;
         this.lng = lng;
@@ -125,11 +131,16 @@ public class GetElements extends AsyncTask<Void, Void, Void> {
                 }
 
 
+
+
+
+
                 marker.setMap(naverMap);
             }
 
         }
         return;
     }
+
 }
 
