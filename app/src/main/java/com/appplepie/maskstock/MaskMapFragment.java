@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -48,7 +49,7 @@ public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
     private String type = "";
     private String id = "3gapo17ttk";
     private Context context;
-
+    private CheckBox checkBox;
 
 
     @Override
@@ -74,6 +75,7 @@ public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
         }
 
         FloatingActionButton loactionRefresh = view.findViewById(R.id.location_refresh);
+        checkBox = view.findViewById(R.id.check);
         NaverMapSdk.getInstance(a).setClient(
                 new NaverMapSdk.NaverCloudPlatformClient(id));
 
@@ -87,6 +89,7 @@ public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
         fm.beginTransaction().add(R.id.map, mapFragment).commit();
 
 
+
         mapFragment.getMapAsync(this);
 
 
@@ -98,12 +101,42 @@ public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
             Toast.makeText(getContext(), "최대 5초가량 소요될 수 있습니다", Toast.LENGTH_SHORT).show();
             CameraUpdate cameraUpdate = CameraUpdate.scrollTo(new LatLng(lat, lng));
             naverMap.moveCamera(cameraUpdate);
-            GetElements getElements = new GetElements(lat, lng, naverMap, type);
+            GetElements getElements = new GetElements(lat, lng, naverMap, type,checkBox.isChecked());
             getElements.execute();
             naverMap.setLocationSource(locationSource);
             naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
 
+
         });
+
+        checkBox.setOnClickListener(view -> {
+
+            if (checkBox.isChecked()){
+                Toast.makeText(getContext(), "최대 5초가량 소요될 수 있습니다", Toast.LENGTH_SHORT).show();
+                CameraUpdate cameraUpdate = CameraUpdate.scrollTo(new LatLng(lat, lng));
+                naverMap.moveCamera(cameraUpdate);
+                GetElements getElements = new GetElements(lat, lng, naverMap, type,checkBox.isChecked());
+                getElements.execute();
+                naverMap.setLocationSource(locationSource);
+                naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
+
+
+            }else{
+                Toast.makeText(getContext(), "최대 5초가량 소요될 수 있습니다", Toast.LENGTH_SHORT).show();
+                CameraUpdate cameraUpdate = CameraUpdate.scrollTo(new LatLng(lat, lng));
+                naverMap.moveCamera(cameraUpdate);
+                GetElements getElements = new GetElements(lat, lng, naverMap, type,checkBox.isChecked());
+                getElements.execute();
+                naverMap.setLocationSource(locationSource);
+                naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
+
+            }
+
+        });
+
+
+
+
         return view;
     }
     //이거는 그냥 있으면 좋은거 (네이버에서만 지원한다고 함)

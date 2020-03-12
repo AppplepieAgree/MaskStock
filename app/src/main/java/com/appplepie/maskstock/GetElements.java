@@ -27,16 +27,19 @@ import java.nio.charset.StandardCharsets;
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class GetElements extends AsyncTask<Void, Void, Void> {
-    public GetElements(double lat, double lng, NaverMap naverMap, String type) {
+    public GetElements(double lat, double lng, NaverMap naverMap, String type,boolean check) {
         this.lat = lat;
         this.lng = lng;
         this.naverMap = naverMap;
         this.type = type;
+        this.check = check;
     }
+
     String type;
     double lat, lng;
     private NaverMap naverMap;
     private StoreResult storeResult;
+    private boolean check;
 
     @Override
     protected void onPreExecute() {
@@ -114,31 +117,40 @@ public class GetElements extends AsyncTask<Void, Void, Void> {
                 String remain_stat = storeResult.stores[i].remain_stat;
                 if (remain_stat == null) {
                     marker.setIconTintColor(Color.GRAY);
+                    if (check){
+                        marker.setMap(naverMap);
+                    }
+
                 } else if (remain_stat.equals("empty")) {
                     marker.setIconTintColor(Color.parseColor("#AFC9CF"));
+                    if (check){
+                        marker.setMap(naverMap);
+
+                    }
 
                 } else if (remain_stat.equals("few")) {
 
                     marker.setIconTintColor(Color.parseColor("#F63C41"));
+                    marker.setMap(naverMap);
 
                 } else if (remain_stat.equals("some")) {
 
                     marker.setIconTintColor(Color.parseColor("#FFDD3C"));
+                    marker.setMap(naverMap);
 
                 } else if (remain_stat.equals("plenty")) {
 
                     marker.setIconTintColor(Color.parseColor("#89E894"));
+                    marker.setMap(naverMap);
 
                 } else {
                     marker.setIconTintColor(Color.parseColor("#AFC9CF"));
+                    if (check){
+                        marker.setMap(naverMap);
+                    }
                 }
-                
 
 
-
-
-
-                marker.setMap(naverMap);
             }
 
         }
