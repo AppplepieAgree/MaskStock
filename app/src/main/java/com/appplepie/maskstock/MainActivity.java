@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity{
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setTitle("위치 서비스 비활성화");
         builder.setMessage("앱을 사용하기 위해서는 위치 서비스가 필요합니다.\n"
-                + "위치 설정을 수정하실래요?");
+                + "위치 설정을 수정해주세요");
         builder.setCancelable(true);
         builder.setPositiveButton("설정", new DialogInterface.OnClickListener() {
             @Override
