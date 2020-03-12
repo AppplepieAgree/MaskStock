@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -48,7 +49,14 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        //화면 세로로 고정 오류떠도 무시 ux가지고 시비텀;;
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         setContentView(R.layout.activity_main);
+
+
         SharedPreferences sharedPreferences = getSharedPreferences("sFile", 0);
         if (!sharedPreferences.getBoolean("tutorial", false)){
             Log.e(TAG, "onCreate: "+sharedPreferences.getBoolean("tutorial", false) );
