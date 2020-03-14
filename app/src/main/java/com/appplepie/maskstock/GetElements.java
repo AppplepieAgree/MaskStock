@@ -1,20 +1,13 @@
 package com.appplepie.maskstock;
 
-import android.app.Activity;
-import android.content.Context;
 import android.graphics.Color;
-import android.graphics.PointF;
 import android.os.AsyncTask;
 import android.util.Log;
-
-import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
 import com.naver.maps.geometry.LatLng;
 import com.naver.maps.map.NaverMap;
-import com.naver.maps.map.overlay.InfoWindow;
 import com.naver.maps.map.overlay.Marker;
-import com.naver.maps.map.overlay.Overlay;
 import com.naver.maps.map.util.MarkerIcons;
 
 import java.io.BufferedReader;
@@ -23,6 +16,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
@@ -34,6 +28,9 @@ public class GetElements extends AsyncTask<Void, Void, Void> {
         this.type = type;
         this.check = check;
     }
+    static ArrayList<Marker> grayMarkers = new ArrayList<>();
+    static ArrayList<Marker> markers = new ArrayList<>();
+
 
     String type;
     double lat, lng;
@@ -95,7 +92,6 @@ public class GetElements extends AsyncTask<Void, Void, Void> {
         }
     }
     private void setMarker(String type){
-
         for (int i = 0; i < storeResult.count; i++) {
             Marker marker = new Marker();
             if (type.equals("") || storeResult.stores[i].type.equals(type)){
@@ -115,46 +111,49 @@ public class GetElements extends AsyncTask<Void, Void, Void> {
 //                });
                 //markerCustom - 색깔 바꾸기
                 String remain_stat = storeResult.stores[i].remain_stat;
-                if (remain_stat == null) {
-                    marker.setIconTintColor(Color.GRAY);
-                    if (check){
-                        marker.setMap(naverMap);
-                    }
-
-                } else if (remain_stat.equals("empty")) {
+                if (remain_stat == null){
                     marker.setIconTintColor(Color.parseColor("#AFC9CF"));
-                    if (check){
-                        marker.setMap(naverMap);
-
+                    grayMarkers.add(marker);
+                    if (!check){
+                        continue;
                     }
-
-                } else if (remain_stat.equals("few")) {
-
-                    marker.setIconTintColor(Color.parseColor("#F63C41"));
-                    marker.setMap(naverMap);
-
-                } else if (remain_stat.equals("some")) {
-
-                    marker.setIconTintColor(Color.parseColor("#FFDD3C"));
-                    marker.setMap(naverMap);
-
-                } else if (remain_stat.equals("plenty")) {
-
-                    marker.setIconTintColor(Color.parseColor("#89E894"));
-                    marker.setMap(naverMap);
-
-                } else {
-                    marker.setIconTintColor(Color.parseColor("#AFC9CF"));
-                    if (check){
-                        marker.setMap(naverMap);
-                    }
+                    continue;
                 }
+                switch (remain_stat) {
+                    case "empty":
+                        marker.setIconTintColor(Color.parseColor("#AFC9CF"));
+                        grayMarkers.add(marker);
+                        if (!check) {
+                            continue;
+                        }
+
+                        break;
+                    case "few":
+                        marker.setIconTintColor(Color.parseColor("#F63C41"));
+
+                        break;
+                    case "some":
+                        marker.setIconTintColor(Color.parseColor("#FFDD3C"));
+
+                        break;
+                    case "plenty":
+                        marker.setIconTintColor(Color.parseColor("#89E894"));
+
+                        break;
+                    default:
+                        marker.setIconTintColor(Color.parseColor("#AFC9CF"));
+                        grayMarkers.add(marker);
+                        if (!check) {
+                            continue;
+                        }
+                        break;
+                }
+                marker.setMap(naverMap);
 
 
             }
 
         }
-        return;
     }
 
 }

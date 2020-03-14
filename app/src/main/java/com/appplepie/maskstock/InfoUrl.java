@@ -1,9 +1,9 @@
 package com.appplepie.maskstock;
 
-public class InfoUrl {
+class InfoUrl {
     String title, url;
 
-    public InfoUrl(String title, String url) {
+    InfoUrl(String title, String url) {
         this.title = title;
         this.url = url;
     }

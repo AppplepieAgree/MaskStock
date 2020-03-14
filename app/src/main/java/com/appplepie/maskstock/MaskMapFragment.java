@@ -2,16 +2,12 @@ package com.appplepie.maskstock;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.PointF;
-import android.icu.text.IDNA;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Toast;
 
@@ -29,10 +25,6 @@ import com.naver.maps.map.MapFragment;
 import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.NaverMapSdk;
 import com.naver.maps.map.OnMapReadyCallback;
-import com.naver.maps.map.Symbol;
-import com.naver.maps.map.overlay.InfoWindow;
-import com.naver.maps.map.overlay.Marker;
-import com.naver.maps.map.overlay.Overlay;
 import com.naver.maps.map.util.FusedLocationSource;
 
 
@@ -47,8 +39,6 @@ public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
     private double lng;
     private NaverMap naverMap;
     private String type = "";
-    private String id = "3gapo17ttk";
-    private Context context;
     private CheckBox checkBox;
 
 
@@ -70,12 +60,13 @@ public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
         }
         try {
             view = inflater.inflate(R.layout.fragment_mask_map, container, false);
-        } catch (InflateException e){
+        } catch (InflateException ignored){
 
         }
 
         FloatingActionButton loactionRefresh = view.findViewById(R.id.location_refresh);
         checkBox = view.findViewById(R.id.check);
+        String id = "3gapo17ttk";
         NaverMapSdk.getInstance(a).setClient(
                 new NaverMapSdk.NaverCloudPlatformClient(id));
 
@@ -108,28 +99,21 @@ public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
 
 
         });
-
+//품절표시 구현 완료
         checkBox.setOnClickListener(view -> {
 
             if (checkBox.isChecked()){
-                Toast.makeText(getContext(), "최대 5초가량 소요될 수 있습니다", Toast.LENGTH_SHORT).show();
-                CameraUpdate cameraUpdate = CameraUpdate.scrollTo(new LatLng(lat, lng));
-                naverMap.moveCamera(cameraUpdate);
-                GetElements getElements = new GetElements(lat, lng, naverMap, type,checkBox.isChecked());
-                getElements.execute();
-                naverMap.setLocationSource(locationSource);
-                naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
-
-
+                if (GetElements.grayMarkers.size()>0){
+                    for (int i =0; i<GetElements.grayMarkers.size(); i++){
+                        GetElements.grayMarkers.get(i).setMap(naverMap);
+                    }
+                }else setMarker();
             }else{
-                Toast.makeText(getContext(), "최대 5초가량 소요될 수 있습니다", Toast.LENGTH_SHORT).show();
-                CameraUpdate cameraUpdate = CameraUpdate.scrollTo(new LatLng(lat, lng));
-                naverMap.moveCamera(cameraUpdate);
-                GetElements getElements = new GetElements(lat, lng, naverMap, type,checkBox.isChecked());
-                getElements.execute();
-                naverMap.setLocationSource(locationSource);
-                naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
-
+                if (GetElements.grayMarkers.size()>0){
+                    for (int i =0; i<GetElements.grayMarkers.size(); i++){
+                        GetElements.grayMarkers.get(i).setMap(null);
+                    }
+                }else setMarker();
             }
 
         });
@@ -164,6 +148,16 @@ public class MaskMapFragment extends Fragment implements OnMapReadyCallback {
         naverMap.addOnLocationChangeListener(location -> {
             lat = location.getLatitude();
             lng = location.getLongitude();
+            if (!(GetElements.grayMarkers.size() >0)){
+                setMarker();
+            }
         });
+    }
+    private void setMarker(){
+        Toast.makeText(getContext(), "최대 5초가량 소요될 수 있습니다", Toast.LENGTH_SHORT).show();
+        CameraUpdate cameraUpdate = CameraUpdate.scrollTo(new LatLng(lat, lng));
+        naverMap.moveCamera(cameraUpdate);
+        GetElements getElements = new GetElements(lat, lng, naverMap, type,checkBox.isChecked());
+        getElements.execute();
     }
 }

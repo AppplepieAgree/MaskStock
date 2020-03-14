@@ -22,11 +22,6 @@ public class InfoWebViewClient extends WebViewClient {
     @Override
     public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
         super.onReceivedError(view, request, error);
-        try{
-
-        }catch (Exception e){
-
-        }
         Log.e(TAG, "onReceivedError: "+error.getDescription() );
     }
 

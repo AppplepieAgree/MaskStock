@@ -13,9 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class ParentAdapter extends RecyclerView.Adapter<ParentAdapter.ItemViewHolder> {
-    ArrayList<InfoUrl> infoUrls;
-    Context context;
-    public ParentAdapter(ArrayList<InfoUrl> infoUrls, Context context) {
+    private ArrayList<InfoUrl> infoUrls;
+    private Context context;
+    ParentAdapter(ArrayList<InfoUrl> infoUrls, Context context) {
         this.infoUrls = infoUrls;
         this.context = context;
     }

@@ -23,10 +23,6 @@ public class MoreInfoWebView extends WebView {
         initDefaultSetting();
     }
 
-    public MoreInfoWebView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        initDefaultSetting();
-    }
     @SuppressLint("SetJavaScriptEnabled")
     private void initDefaultSetting(){
         WebSettings webSettings = this.getSettings();
